@@ -34,6 +34,8 @@ class WebViewYouTubePlayer extends WebView implements YouTubePlayer, YouTubePlay
 
     private YouTubePlayerInitListener youTubePlayerInitListener;
 
+    boolean destroyed = false;
+
     protected WebViewYouTubePlayer(Context context) {
         this(context, null);
     }
@@ -125,9 +127,12 @@ class WebViewYouTubePlayer extends WebView implements YouTubePlayer, YouTubePlay
 
     @Override
     public void destroy() {
-        youTubePlayerListeners.clear();
-        mainThreadHandler.removeCallbacksAndMessages(null);
-        super.destroy();
+        if(!destroyed) {
+            youTubePlayerListeners.clear();
+            mainThreadHandler.removeCallbacksAndMessages(null);
+            super.destroy();
+            destroyed = true;
+        }
     }
 
     @NonNull
